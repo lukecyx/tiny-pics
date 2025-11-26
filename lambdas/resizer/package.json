@@ -1,0 +1,29 @@
+{
+  "name": "resizer",
+  "version": "0.1.0",
+  "type": "commonjs",
+  "scripts": {
+    "build-old": "docker run --rm -v \"$PWD\":/var/task -w /var/task --platform linux/amd64 public.ecr.aws/sam/build-nodejs22.x sh -c \"rm -rf node_modules package-lock.json dist/lambda.zip && npm install --omit=dev && npm rebuild sharp --arch=x64 --platform=linux && node esbuild.config.js && cp dist/handler.js ./index.js && zip -r lambda.zip index.js node_modules \" && cp lambda.zip ../../terraform/lambda/lambda.zip",
+    "build:clean": "rm -rf node_modules package-lock.json dist/lambda.zip",
+    "build:docker-install": "docker run --rm -v \"$PWD\":/var/task -w /var/task --platform linux/amd64 public.ecr.aws/sam/build-nodejs22.x npm install --omit=dev",
+    "build:docker-rebuild-sharp": "docker run --rm -v \"$PWD\":/var/task -w /var/task --platform linux/amd64 public.ecr.aws/sam/build-nodejs22.x npm rebuild sharp --arch=x64 --platform=linux",
+    "build:esbuild": "node esbuild.config.js",
+    "build:copy-handler": "cp dist/handler.js ./index.js",
+    "build:zip": "zip -r lambda.zip index.js node_modules",
+    "build:copy-zip": "cp lambda.zip ../../terraform/lambda/lambda.zip",
+    "build": "npm run build:clean && npm run build:docker-install && npm run build:docker-rebuild-sharp && npm run build:esbuild && npm run build:copy-handler && npm run build:zip && npm run build:copy-zip"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.937.0",
+    "@aws-sdk/s3-request-presigner": "^3.937.0",
+    "@aws-sdk/client-dynamodb": "^3.939.0",
+    "@esbuild-plugins/tsconfig-paths": "^0.1.2",
+    "esbuild": "^0.27.0",
+    "esbuild-node-externals": "^1.20.1",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.158",
+    "typescript": "^5.9.3"
+  }
+}

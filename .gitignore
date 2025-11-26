@@ -17,6 +17,12 @@
 /.next/
 /out/
 
+# lambdas
+**/lambdas/**/dist/
+**/lambdas/**/node_modules/
+lambda.zip
+
+
 # production
 /build
 
@@ -39,3 +45,20 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# sam
+/.aws-sam/
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+.terraform.tfstate.lock.info
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
