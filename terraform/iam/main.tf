@@ -1,3 +1,7 @@
+# -------------------
+# RESIZE IMAGE LAMBDA
+# --------------------
+
 data "aws_iam_policy_document" "lambda_assume_role" {
   statement {
     effect = "Allow"
@@ -11,8 +15,8 @@ data "aws_iam_policy_document" "lambda_assume_role" {
   }
 }
 
-resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
+resource "aws_iam_role" "iam_for_resize_lambda" {
+  name               = "iam_for_resize_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
@@ -50,7 +54,7 @@ resource "aws_iam_policy" "lambda_s3" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_s3_attach" {
-  role       = aws_iam_role.iam_for_lambda.name
+  role       = aws_iam_role.iam_for_resize_lambda.name
   policy_arn = aws_iam_policy.lambda_s3.arn
 }
 
@@ -73,7 +77,7 @@ resource "aws_iam_policy" "lambda_logging" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_logging_attach" {
-  role       = aws_iam_role.iam_for_lambda.name
+  role       = aws_iam_role.iam_for_resize_lambda.name
   policy_arn = aws_iam_policy.lambda_logging.arn
 }
 
@@ -98,6 +102,6 @@ resource "aws_iam_policy" "write_to_dynamo_policy" {
 
 
 resource "aws_iam_role_policy_attachment" "write_to_dynamo_attach" {
-  role       = aws_iam_role.iam_for_lambda.name
+  role       = aws_iam_role.iam_for_resize_lambda.name
   policy_arn = aws_iam_policy.write_to_dynamo_policy.arn
 }

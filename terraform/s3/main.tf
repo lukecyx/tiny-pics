@@ -64,9 +64,9 @@ resource "aws_s3_bucket_notification" "uploaded_bucket_notif" {
   bucket = aws_s3_bucket.uploaded.id
 
   lambda_function {
-    lambda_function_arn = var.lambda_func_arn
+    lambda_function_arn = var.lambda_resizer_func_arn
     events              = ["s3:ObjectCreated:*"]
   }
 
-  depends_on = [var.lambda_permission_dep]
+  depends_on = [var.lambda_resizer_permission_dep]
 }
